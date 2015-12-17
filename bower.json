@@ -1,0 +1,15 @@
+{
+	"name": "leaflet-sm-measure",
+		"authors": [
+		"Max L Dolgov <bananafishbone@gmail.com>"
+	],
+	"moduleType": [
+		"globals"
+	],
+	"license": "proprietary",
+	"homepage": "http://maps.sputnik.ru/",
+	"private": true,
+	"dependencies": {
+		"sm-leaflet-editable": "https://github.com/sputnik-maps/Leaflet.Editable.git#master"
+	}
+}
