@@ -10,6 +10,6 @@
 	"homepage": "http://maps.sputnik.ru/",
 	"private": true,
 	"dependencies": {
-		"sm-leaflet-editable": "https://github.com/sputnik-maps/Leaflet.Editable.git#master"
+		"sm-leaflet-editable": "https://github.com/sputnik-maps/Leaflet.Editable.git#~0.6.1"
 	}
 }
