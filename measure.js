@@ -51,7 +51,7 @@ L.SmMeasure = L.Control.extend({
 	onAdd: function (map) {
 		this._map = map;
 		if (! map.editTools) {
-			this._map.on('load', this.initEditable, this);
+			map.on('load', this.initEditable, this);
 		}
 
 		this.active = false;
