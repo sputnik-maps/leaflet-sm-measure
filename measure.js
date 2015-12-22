@@ -51,7 +51,7 @@ L.SmMeasure = L.Control.extend({
 	onAdd: function (map) {
 		this._map = map;
 		if (! map.editTools) {
-			this.initEditable(map);
+			this._map.on('load', this.initEditable, this);
 		}
 
 		this.active = false;
@@ -555,7 +555,9 @@ L.SmMeasure = L.Control.extend({
 	 *
 	 * @param map
 	 */
-	initEditable: function (map) {
+	initEditable: function () {
+		var map = this._map;
+
 		map.options.editOptions = {
 			lineGuideOptions: {
 				dashArray: '1,10',
