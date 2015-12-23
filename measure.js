@@ -19,7 +19,7 @@ if (! L.Editable) {
 L.SmMeasure = L.Control.extend({
 	options: {
 		position: 'topright',
-		classList: 'leaflet-measure leaflet-draw-section',
+		classList: 'leaflet-measure',
 		tooltip: {
 			closeTipClass: 'leaflet-measure-tooltip-close',
 			removableClass: 'leaflet-measure-removable'
@@ -41,6 +41,17 @@ L.SmMeasure = L.Control.extend({
 		}
 	},
 
+
+	addTo: function (map) {
+		if (! this.options.bindControl) {
+			L.Control.prototype.addTo.call(this, map);
+			return this;
+		}
+
+		this._container = this.onAdd(map);
+		return this;
+	},
+
 	/**
 	 * when added to map: init dependency,
 	 * control container creation
@@ -50,12 +61,19 @@ L.SmMeasure = L.Control.extend({
 	 */
 	onAdd: function (map) {
 		this._map = map;
+
 		if (! map.editTools) {
-			map.on('load', this.initEditable, this);
+			map.whenReady(this.initEditable, this);
 		}
 
 		this.active = false;
-		this._container = this._createControl();
+
+		if (this.options.bindControl && this.options.elContainer && this.options.elButton) {
+			this._container = this._bindControl(this.options.elContainer, this.options.elButton);
+		} else {
+			this._container = this._createControl();
+		}
+
 		return this._container;
 	},
 
@@ -174,12 +192,9 @@ L.SmMeasure = L.Control.extend({
 
 			this.resetState();
 			this._addHooks();
-
-			this._actionsContainer.style.display = 'block';
 		}
 		else {
 			L.DomUtil.removeClass(this._button, 'active');
-			this._actionsContainer.style.display = 'none';
 
 			this._removeHooks();
 
@@ -197,14 +212,13 @@ L.SmMeasure = L.Control.extend({
 	},
 
 	/**
-	 * Creates UI-container for a button
+	 * Creates L-Control container and button inside
 	 *
 	 * @returns {HTMLDivElement}
 	 * @private
 	 */
 	_createControl: function () {
-		var container = L.DomUtil.create('div', 'leaflet-measure leaflet-draw-section'),
-			li;
+		var container = L.DomUtil.create('div', 'leaflet-measure');
 		this._toolbarContainer = L.DomUtil.create('div', 'leaflet-bar');
 		this._button = this._createButton({
 			title: 'Измерение расстояний',
@@ -213,23 +227,22 @@ L.SmMeasure = L.Control.extend({
 			callback: this.onBtnClick
 		});
 
-		this._actionsContainer = L.DomUtil.create('ul', 'leaflet-draw-actions');
-
-		li = L.DomUtil.create('li', '', this._actionsContainer);
-		if (this.options.useBalloon) {
-			this._balloon = this._createButton({
-				text: '0 м',
-				container: li
-			});
-			this._balloon.style.display = 'block';
-		}
-
-
 		// Add draw and cancel containers to the control container
 		container.appendChild(this._toolbarContainer);
-		container.appendChild(this._actionsContainer);
 
 		return container;
+	},
+	/**
+	 * Binds existing DOM Elements as L-Control container and button
+	 *
+	 * @returns {HTMLDivElement}
+	 * @private
+	 */
+	_bindControl: function (elContainer, elButton) {
+		this._setButtonEvents(elButton);
+		this._button = elButton;
+
+		return elContainer;
 	},
 
 	/**
@@ -249,16 +262,18 @@ L.SmMeasure = L.Control.extend({
 		if (options.title) {
 			link.title = options.title;
 		}
-		if (options.callback) {
-			L.DomEvent
-				.on(link, 'click', L.DomEvent.stopPropagation)
-				.on(link, 'mousedown', L.DomEvent.stopPropagation)
-				.on(link, 'dblclick', L.DomEvent.stopPropagation)
-				.on(link, 'click', L.DomEvent.preventDefault)
-				.on(link, 'click', options.callback, this);
-		}
+		this._setButtonEvents(link);
 
 		return link;
+	},
+
+	_setButtonEvents: function (elButton) {
+		L.DomEvent
+			.on(elButton, 'click', L.DomEvent.stopPropagation)
+			.on(elButton, 'mousedown', L.DomEvent.stopPropagation)
+			.on(elButton, 'dblclick', L.DomEvent.stopPropagation)
+			.on(elButton, 'click', L.DomEvent.preventDefault)
+			.on(elButton, 'click', this.onBtnClick, this);
 	},
 
 	/**
