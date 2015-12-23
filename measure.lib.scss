@@ -1,0 +1,78 @@
+// pictures
+$pictMeasureCloseTip: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAiUlEQVQ4jc3SPQ6DMAyGYUol1JmBQyHgNhUX7sAZujwd6kgoKr/tUC+OPzvWG8dF8ZeGyxH9YyHKTCt3NUCFJs7XzDeoVrFR44E+4lv4PvR68TkJGy2e6CLuIm7ndUskCXfAhHv4YZ7fmkPCHr1tnOtbl88TfDWDn/xCJM7tQU5zehPX8HY3OGIvSGj52flmfJ8AAAAASUVORK5CYII=);
+$pictMeasureCloseTipHover: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAyElEQVQ4T2NkoBAwUqifAZcBIPH/WAzHEMdnAEjuH5IhTFBDUQzGZgAbUKEAEL8CYmYg/otEiwHZH4D4F8xgZANgzhMCSl4C4kwg3gzEHED8A4h9gXg6EOsB8TsgBqtHdwHImSBnewHxBiAOAuItQOwDxOuAOACItwExTB3WQIQ52w+ocBYQ9wJxMRCnAfEmJO+AfYErEGHOLgeq6QDiCiDuRPIOWDMuAyhyAUVhQJVYAHmL7HQADxho4JKdEmGBS1FeQHYNXjYAkCQ8EbPBDewAAAAASUVORK5CYII=);
+
+// L-editable vertex markers
+.leaflet-middle-icon, .leaflet-vertex-icon {
+	border-radius: 5px;
+	@include box-sizing(border-box);
+}
+
+.leaflet-vertex-icon {
+	border-width: 2px;
+}
+
+.leaflet-middle-icon:hover, .leaflet-vertex-icon:hover {
+	border: 1px solid #fff;
+	background-color: #777;
+}
+
+// measure-tooltip
+.leaflet-measure-tooltip-marker {
+	border: 0;
+}
+
+.leaflet-measure-tooltip {
+	cursor: default;
+}
+
+.leaflet-measure-tooltip-close {
+	text-decoration: none;
+	width: 16px;
+	height: 16px;
+	background: transparent $pictMeasureCloseTip 0 0 no-repeat;
+	padding: 0;
+	border: none;
+	margin: -2px -3px -2px -2px;
+	position: relative;
+	bottom: 6px;
+	right: -6px;
+	cursor: pointer;
+	display: none;
+
+	&:hover {
+		background-image: $pictMeasureCloseTipHover;
+	}
+
+	.leaflet-measure-removable & {
+		display: inline-block;
+	}
+}
+
+.leaflet-draw-tooltip {
+	background: rgb(54, 54, 54);
+	background: rgba(0, 0, 0, 0.5);
+	border: 1px solid transparent;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	color: #fff;
+	font: 12px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
+	margin-left: 20px;
+	margin-top: -21px;
+	padding: 4px 8px;
+	position: absolute;
+	//	visibility: hidden;
+	white-space: nowrap;
+	z-index: 6;
+
+	&:before {
+		border-right: 6px solid black;
+		border-right-color: rgba(0, 0, 0, 0.5);
+		border-top: 6px solid transparent;
+		border-bottom: 6px solid transparent;
+		content: "";
+		position: absolute;
+		top: 7px;
+		left: -7px;
+	}
+}
