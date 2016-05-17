@@ -199,8 +199,9 @@ L.SmMeasure = L.Control.extend({
 			this._removeHooks();
 
 			this._map.editTools.stopDrawing();
-			this._map.editTools.featuresLayer.clearLayers();
-			this._map.editTools.editLayer.clearLayers();
+			//this._map.editTools.featuresLayer.clearLayers();
+			//this._map.editTools.editLayer.clearLayers();
+			this._map.removeLayer(this.line);
 
 			this.resetTooltip();
 
